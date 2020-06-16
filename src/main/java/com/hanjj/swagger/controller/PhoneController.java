@@ -1,6 +1,7 @@
 package com.hanjj.swagger.controller;
 
 import com.hanjj.swagger.pojo.Phone;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -36,6 +37,7 @@ public class PhoneController {
     /**
      * 获取所有手机信息
      */
+    @ApiOperation("获取所有手机信息")
     @GetMapping("/phone")
     public List<Phone> get() {
         return phones;
@@ -44,6 +46,7 @@ public class PhoneController {
     /**
      * 根据 ID 获取手机信息
      */
+    @ApiOperation("根据 ID 获取手机信息")
     @GetMapping("/phone/{id}")
     public Phone get(@PathVariable(name = "id") Integer id) {
         return getPhoneById(id);
@@ -53,6 +56,7 @@ public class PhoneController {
      * 添加手机
      */
     @PostMapping("/phone")
+    @ApiOperation("添加手机")
     public String create(@RequestBody Phone phone) {
         try {
             phones.add(phone);
@@ -66,6 +70,7 @@ public class PhoneController {
     /**
      * 根据 ID 删除手机
      */
+    @ApiOperation("根据 ID 删除手机")
     @DeleteMapping("/phone/{id}")
     public String delete(@PathVariable(name = "id") Integer id) {
         try {
@@ -78,8 +83,9 @@ public class PhoneController {
     }
 
     /**
-     * 修改手机信息
+     * 根据 ID 修改手机信息
      */
+    @ApiOperation("根据 ID 修改手机信息")
     @PutMapping("/phone")
     public String update(@RequestBody Phone phone) {
         try {
