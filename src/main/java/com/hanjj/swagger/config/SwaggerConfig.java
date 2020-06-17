@@ -1,5 +1,9 @@
 package com.hanjj.swagger.config;
 
+import com.google.common.base.Optional;
+import com.google.common.base.Predicate;
+import com.hanjj.swagger.annotation.ApiGroup;
+import com.hanjj.swagger.constant.ApiGroupConstant;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -7,6 +11,7 @@ import org.springframework.core.env.Environment;
 import org.springframework.core.env.Profiles;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import springfox.documentation.RequestHandler;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.service.ApiInfo;
@@ -17,6 +22,7 @@ import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 
 /**
@@ -29,6 +35,38 @@ public class SwaggerConfig {
 
     @Value("${swagger.description}")
     private String description;
+
+
+    @Bean
+    public Docket laptop() {
+        return new Docket(DocumentationType.SWAGGER_2).groupName("笔记本电脑")
+                .select()
+                .apis(new Predicate<RequestHandler>() {
+                          @Override
+                          public boolean apply(RequestHandler requestHandler) {
+                              Optional<ApiGroup> controllerAnnotation = requestHandler.findControllerAnnotation(ApiGroup.class);
+                              return controllerAnnotation.isPresent() &&
+                                      Arrays.asList(controllerAnnotation.get().group()).contains(ApiGroupConstant.LAPTOP);
+                          }
+                      }
+                ).build();
+    }
+
+    @Bean
+    public Docket phone() {
+        return new Docket(DocumentationType.SWAGGER_2).groupName("手机")
+                .select()
+                .apis(new Predicate<RequestHandler>() {
+                          @Override
+                          public boolean apply(RequestHandler requestHandler) {
+                              Optional<ApiGroup> controllerAnnotation = requestHandler.findControllerAnnotation(ApiGroup.class);
+                              return controllerAnnotation.isPresent() &&
+                                      Arrays.asList(controllerAnnotation.get().group()).contains(ApiGroupConstant.PHONE);
+                          }
+                      }
+                ).build();
+    }
+
 
     @Bean
     public Docket docket(Environment environment) {

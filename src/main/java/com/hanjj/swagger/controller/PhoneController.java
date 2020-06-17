@@ -1,12 +1,18 @@
 package com.hanjj.swagger.controller;
 
+import com.hanjj.swagger.annotation.ApiGroup;
+import com.hanjj.swagger.constant.ApiGroupConstant;
 import com.hanjj.swagger.pojo.Phone;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@ApiGroup(group = {ApiGroupConstant.PHONE})
+@Api(tags = "手机相关接口")
 @RestController
 @RequestMapping("/api")
 public class PhoneController {
@@ -57,7 +63,7 @@ public class PhoneController {
      */
     @PostMapping("/phone")
     @ApiOperation("添加手机")
-    public String create(@RequestBody Phone phone) {
+    public String create(@ApiParam("使用手机实体类添加手机") @RequestBody Phone phone) {
         try {
             phones.add(phone);
         } catch (Exception e) {
